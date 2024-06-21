@@ -3,6 +3,7 @@
 import { Button, Card, Flex, FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
+import validator from 'validator';
 
 import { InfluencerCampaignForm } from '../../../../lib/api'
 import { capitalize, getInputType, getSocialMediaIcon } from '@/helper'
@@ -29,10 +30,9 @@ const CampaignForm = ({ formFields }: Props) => {
 
     const phoneValidation = {
         required: 'Phone number is required',
-        pattern: {
-            value: /^[0-9]{10}$/,
-            message: 'Phone number must be 10 digits',
-        },
+        validate: {
+            valid: (value: string) => validator.isMobilePhone(value, 'any', { strictMode: false }) || 'Invalid phone number'
+        }
     };
 
     const onSubmit = (data: unknown) => {
